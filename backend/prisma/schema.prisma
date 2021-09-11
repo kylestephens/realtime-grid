@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Grid {
+  id                Int               @id @default(autoincrement())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  users             UserData[]
+  notifications     Notification[]
+}
+
+model UserData {
+  id                Int               @id @default(autoincrement())
+  firstName         String
+  lastName          String
+  jobTitle          String
+  grid              Grid              @relation(fields: [gridId], references: [id])
+  gridId            Int
+}
+
+model Notification {
+  id                Int               @id @default(autoincrement())
+  title             String
+  message           String
+  isRead            Boolean           @default(false)
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  grid              Grid              @relation(fields: [gridId], references: [id])
+  gridId            Int
+}

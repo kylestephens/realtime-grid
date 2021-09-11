@@ -1,0 +1,89 @@
+.manage-card {
+  position:relative;
+  margin: 100px auto;
+  width: 500px;
+  height: 380px;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.33);
+  -moz-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.33);
+  box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.33);
+}
+
+.mc-header{
+  position:relative;
+  color: #00415d;
+  padding: 2rem 1rem;
+  border-bottom: 1px solid #eee;
+  text-align:center;
+
+  a {
+    margin: 0 25px;
+    padding: 0 20px;
+    text-decoration: none;
+    color: #666;
+    font-weight: 500;
+    font-size: 16px;
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    transition: all 0.1s linear;
+  }
+
+  .active {
+    color: #2196F3;
+    font-size: 18px;
+  }
+}
+
+.manage-form, .create-form {
+  position:relative;
+  float: left;
+  width: 100%;
+  height:auto;
+  margin-top: 20px;
+  text-align:center;
+}
+
+.form-group{
+  width:100%;
+  margin-bottom: 10px;
+
+  input:focus{
+    border-color: #176cb3;
+  }
+
+  button{
+    width:50%;
+    background-color: #2196F3;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 14px 0;
+    border-radius: 2px;
+    text-transform: uppercase;
+
+    &:hover {
+      background-color: #1a75c0;
+    }
+  }
+
+  select,
+  input[type="number"],
+  input[type="email"],
+  input[type="password"] {
+    width: calc(50% - 22px);
+    height:45px;
+    outline: none;
+    border: 1px solid #ddd;
+    padding: 0 10px;
+    border-radius: 2px;
+    color: #333;
+    font-size:0.8rem;
+    -webkit-transition:all 0.1s linear;
+    -moz-transition:all 0.1s linear;
+    transition:all 0.1s linear;
+  }
+}

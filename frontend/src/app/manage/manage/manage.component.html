@@ -1,0 +1,35 @@
+
+<div class="manage-card">
+
+  <div class="mc-header">
+    <a (click)="isUpdateView = false;" [ngClass]="{ 'active' : !isUpdateView }">Create</a>
+    <a (click)="isUpdateView = true;"  [ngClass]="{ 'active' : isUpdateView }">Manage / Update</a>
+  </div>
+
+  <div class="create-form" *ngIf="!isUpdateView">
+    <div class="form-group">
+      <input #numberRowsToGenerate type="number" placeholder="Number of Rows to Generate" />
+    </div>
+    <div class="form-group">
+      <button (click)="onClickCreateGrid()">Create Grid</button>
+    </div>
+  </div>
+
+  <div class="manage-form" *ngIf="isUpdateView">
+    <div class="form-group">
+      <input #gridId type="number" placeholder="Grid ID" />
+    </div>
+    <div class="form-group">
+      <select #operationType>
+        <option value="DELETE">Delete</option>
+        <option value="INSERT">Insert</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <input #numberRowsToUpdate type="number" placeholder="Number of Rows" />
+    </div>
+    <div class="form-group">
+      <button (click)="onClickUpdate()">Update</button>
+    </div>
+  </div>
+</div>
