@@ -8,9 +8,15 @@ import { AppComponent } from './app.component';
 import { MenubarModule } from 'primeng/menubar';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { BadgeModule } from "primeng/badge";
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
+
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 @NgModule({
   declarations: [
@@ -23,8 +29,11 @@ import { HttpClientModule } from '@angular/common/http';
     MenubarModule,
     InputTextModule,
     ButtonModule,
+    BadgeModule,
+    OverlayPanelModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    SocketIoModule.forRoot(config)
   ],
   providers: [],
   bootstrap: [AppComponent]

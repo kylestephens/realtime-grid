@@ -2,14 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateGridDto } from './dto/create-grid.dto';
 import { Grid } from '@prisma/client';
-import { UpdateGridDto } from './dto/update-grid.dto';
+import { Operation, UpdateGridDto } from './dto/update-grid.dto';
+import { NotificationsService } from 'src/notifications/notifications.service';
 const faker = require('faker');
 
 @Injectable()
 export class GridService {
 
   constructor(
-    private prisma: PrismaService
+    private prisma: PrismaService,
+    private notificationsService: NotificationsService
   ) {}
 
   async get(gridId: number): Promise<Grid> {
@@ -67,6 +69,19 @@ export class GridService {
       }
     });
 
+    this.notificationsService.sendGridUpdate(gridId, {
+      operation: Operation.DELETE,
+      rows: rowsToDelete
+    });
+
+    const date = new Date();
+
+    this.notificationsService.createUserNotification({
+      title: `Rows Deleted`,
+      message: `${numberOfRows} rows deleted on ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+      gridId
+    });
+
     return {
       removed: rowsDeleted?.count
     };
@@ -87,6 +102,29 @@ export class GridService {
 
     const rowsInserted = await this.prisma.userData.createMany({
       data: mockData
+    });
+
+    const newRows = await this.prisma.userData.findMany({
+      take: numberOfRows,
+      where: {
+        gridId
+      },
+      orderBy: {
+        id: 'desc'
+      }
+    });
+
+    this.notificationsService.sendGridUpdate(gridId, {
+      operation: Operation.INSERT,
+      rows: newRows
+    });
+
+    const date = new Date();
+
+    this.notificationsService.createUserNotification({
+      title: `Rows Inserted`,
+      message: `${numberOfRows} rows inserted on ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+      gridId
     });
 
     return {

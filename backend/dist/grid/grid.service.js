@@ -12,10 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GridService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
+const update_grid_dto_1 = require("./dto/update-grid.dto");
+const notifications_service_1 = require("../notifications/notifications.service");
 const faker = require('faker');
 let GridService = class GridService {
-    constructor(prisma) {
+    constructor(prisma, notificationsService) {
         this.prisma = prisma;
+        this.notificationsService = notificationsService;
     }
     async get(gridId) {
         return this.prisma.grid.findUnique({
@@ -64,6 +67,16 @@ let GridService = class GridService {
                 }
             }
         });
+        this.notificationsService.sendGridUpdate(gridId, {
+            operation: update_grid_dto_1.Operation.DELETE,
+            rows: rowsToDelete
+        });
+        const date = new Date();
+        this.notificationsService.createUserNotification({
+            title: `Rows Deleted`,
+            message: `${numberOfRows} rows deleted on ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+            gridId
+        });
         return {
             removed: rowsDeleted === null || rowsDeleted === void 0 ? void 0 : rowsDeleted.count
         };
@@ -82,6 +95,25 @@ let GridService = class GridService {
         const rowsInserted = await this.prisma.userData.createMany({
             data: mockData
         });
+        const newRows = await this.prisma.userData.findMany({
+            take: numberOfRows,
+            where: {
+                gridId
+            },
+            orderBy: {
+                id: 'desc'
+            }
+        });
+        this.notificationsService.sendGridUpdate(gridId, {
+            operation: update_grid_dto_1.Operation.INSERT,
+            rows: newRows
+        });
+        const date = new Date();
+        this.notificationsService.createUserNotification({
+            title: `Rows Inserted`,
+            message: `${numberOfRows} rows inserted on ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+            gridId
+        });
         return {
             inserted: rowsInserted === null || rowsInserted === void 0 ? void 0 : rowsInserted.count
         };
@@ -89,7 +121,8 @@ let GridService = class GridService {
 };
 GridService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        notifications_service_1.NotificationsService])
 ], GridService);
 exports.GridService = GridService;
 //# sourceMappingURL=grid.service.js.map

@@ -12,6 +12,7 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const grid_module_1 = require("./grid/grid.module");
 const notifications_module_1 = require("./notifications/notifications.module");
+const app_gateway_1 = require("./app.gateway");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -21,7 +22,7 @@ AppModule = __decorate([
             notifications_module_1.NotificationsModule
         ],
         controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        providers: [app_service_1.AppService, app_gateway_1.AppGateway],
     })
 ], AppModule);
 exports.AppModule = AppModule;

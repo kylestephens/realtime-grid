@@ -1,8 +1,20 @@
-<p-menubar [model]="items">
-  <div>
-      <input type="text" pInputText placeholder="Search">
-      <button type="button" pButton label="Logout" icon="pi pi-power-off" style="margin-left:.25em"></button>
-  </div>
+<p-menubar [model]="menuItems">
+  <i
+    class="pi pi-bell p-mr-4 p-text-secondary"
+    pBadge
+    style="font-size: 2rem"
+    value="{{ notifications.length }}"
+    (click)="op.toggle($event)"
+  ></i>
+  <p-overlayPanel #op>
+    <ng-template pTemplate>
+        <div *ngFor="let notification of notifications">
+          <h5>{{ notification.title }}</h5>
+          <span>{{ notification.message }}</span>
+          <hr>
+        </div>
+    </ng-template>
+  </p-overlayPanel>
 </p-menubar>
 
 <router-outlet></router-outlet>

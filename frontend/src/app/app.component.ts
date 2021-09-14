@@ -1,16 +1,41 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { MenuItem } from 'primeng/api';
+import { NotificationsService } from './notifications.service';
 
+interface Notification {
+  id: number,
+  title: string,
+  message: string,
+  isRead: boolean
+}
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-  items!: MenuItem[];
+
+  constructor(
+    private route: ActivatedRoute,
+    private notificationsService: NotificationsService
+  ) { }
+
+  public menuItems!: MenuItem[];
+  public notifications!: Notification[];
 
   ngOnInit() {
-    this.items = [
+    this.notificationsService.getNotifications().subscribe((data: any) => {
+      this.notifications = data;
+    });
+
+    this.notificationsService.receiveNotifications().subscribe((message: any) => {
+      debugger;
+      this.notifications.push(message);
+    });
+
+    // a dummy navigation menu
+    this.menuItems = [
       {
         label: 'File',
         icon: 'pi pi-fw pi-file',
@@ -139,4 +164,5 @@ export class AppComponent {
       }
     ];
   }
+
 }

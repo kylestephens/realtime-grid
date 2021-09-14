@@ -2,6 +2,8 @@
     class="ag-theme-alpine demo-grid"
     [rowData]="rowData"
     [columnDefs]="columnDefs"
+    [getRowNodeId]="getRowNodeId"
+    [animateRows]="true"
     (gridReady)="onGridReady($event)"
 >
 </ag-grid-angular>
